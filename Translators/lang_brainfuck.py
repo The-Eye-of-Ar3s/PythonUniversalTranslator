@@ -57,14 +57,20 @@ def translator(keyvec: list[str], countvec: list[int]) -> str:
     outcode.append("}")
     return "\n".join(outcode)
 
-def compiler(code: str, name: str) -> None:
-    try:
-        with open("out.cpp", "wt") as f:
-            f.write(code)
-        os.system("g++ out.cpp -o {}".format(name))
-    except Exception as e:
-        print(f"Error: {e}")
-        exit(1)
+
+def findloops(code: str) -> Tuple[dict[str:str],dict[str:str]]:
+    fwloops = {}
+    bwloops = {}
+    loopstack = []
+    for i, e in enumerate(code):
+        if e == "[":
+            loopstack.append(i)
+        elif e == "]":
+            fwloops[str(loopstack[-1])] = str(i)
+            bwloops[str(i)] = str(loopstack[-1])
+            loopstack.pop()
+    return (fwloops, bwloops)
+
 
 def renderer(code:str) -> str:
     output = ""
@@ -95,15 +101,12 @@ def renderer(code:str) -> str:
         index += 1
     return "#include <iostream>\nint main() {\nstd::cout << \""+output[:-1]+"\";\nreturn 0;\n}"
 
-def findloops(code: str) -> Tuple[dict[str:str],dict[str:str]]:
-    fwloops = {}
-    bwloops = {}
-    loopstack = []
-    for i, e in enumerate(code):
-        if e == "[":
-            loopstack.append(i)
-        elif e == "]":
-            fwloops[str(loopstack[-1])] = str(i)
-            bwloops[str(i)] = str(loopstack[-1])
-            loopstack.pop()
-    return (fwloops, bwloops)
+
+def compiler(code: str, name: str) -> None:
+    try:
+        with open("out.cpp", "wt") as f:
+            f.write(code)
+        os.system("g++ out.cpp -o {}".format(name))
+    except Exception as e:
+        print(f"Error: {e}")
+        exit(1)
