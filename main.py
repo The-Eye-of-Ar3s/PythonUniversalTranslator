@@ -15,6 +15,7 @@ def langhandler(filename: str) -> str:
     langs = {
         "b": "BRAINFUCK",
         "bf": "BRAINFUCK",
+        "brainfuck": "BRAINFUCK",
         "lang_brainfuck": "BRAINFUCK",
         "len": "LENGTH",
         "lang_length": "LENGTH"

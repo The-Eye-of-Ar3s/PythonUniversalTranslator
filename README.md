@@ -9,6 +9,7 @@ A Python based universal translator to c++ for a variaty of [esolangs](https://e
 ```
 .b
 .bf
+.brainfuck
 .lang_brainfuck
 ```
  or specified via the second command line argument specifying the language.
